@@ -1,0 +1,4 @@
+target/*
+.idea/*
+pom2.xml
+*.iml

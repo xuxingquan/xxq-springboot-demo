@@ -23,32 +23,24 @@ import java.util.Objects;
 
 /**
  * 秒杀商品的控制层
- *
- * @auther TyCoding
- * @date 2018/10/6
  */
 @Controller
 @RequestMapping("/seckill")
 public class SeckillController {
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private SeckillService seckillService;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @RequestMapping("/list")
     public String findSeckillList(Model model) {
         List<Seckill> list = seckillService.findAll();
         model.addAttribute("list", list);
         return "page/seckill";
     }
-
     @ResponseBody
     @RequestMapping("/findById")
     public Seckill findById(@RequestParam("id") Long id) {
         return seckillService.findById(id);
     }
-
     @RequestMapping("/{seckillId}/detail")
     public String detail(@PathVariable("seckillId") Long seckillId, Model model) {
         if (seckillId == null) {

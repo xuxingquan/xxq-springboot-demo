@@ -17,10 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * @auther TyCoding
- * @date 2018/10/8
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class SeckillServiceImplTest {

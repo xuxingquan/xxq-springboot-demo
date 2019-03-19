@@ -11,15 +11,9 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
-/**
- * @auther TyCoding
- * @date 2018/10/11
- */
 @Configuration
 public class RedisTemplateConfig {
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);

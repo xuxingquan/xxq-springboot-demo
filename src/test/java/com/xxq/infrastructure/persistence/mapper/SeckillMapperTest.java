@@ -10,10 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @auther TyCoding
- * @date 2018/10/8
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration("classpath:application.yml")
 @SpringBootTest

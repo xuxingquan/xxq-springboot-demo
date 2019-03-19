@@ -1,9 +1,5 @@
 package com.xxq.common.enums;
 
-/**
- * @auther TyCoding
- * @date 2018/10/8
- */
 public enum SeckillStatEnum {
     SUCCESS(1, "秒杀成功"),
     END(0, "秒杀结束"),

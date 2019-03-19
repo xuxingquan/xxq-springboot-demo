@@ -10,10 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @auther TyCoding
- * @date 2018/10/11
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class RedisTemplateConfigTest {

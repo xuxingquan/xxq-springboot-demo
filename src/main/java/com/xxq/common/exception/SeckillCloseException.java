@@ -2,8 +2,6 @@ package com.xxq.common.exception;
 
 /**
  * 秒杀关闭异常
- * @auther TyCoding
- * @date 2018/10/8
  */
 public class SeckillCloseException extends SeckillException {
 

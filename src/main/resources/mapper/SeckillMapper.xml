@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.tycoding.infrastructure.persistence.mapper.SeckillMapper">
+<mapper namespace="com.xxq.infrastructure.persistence.mapper.SeckillMapper">
 
-    <select id="findAll" resultType="Seckill">
+    <select id="findAll" resultType="com.xxq.infrastructure.persistence.entity.Seckill">
         SELECT * FROM seckill
     </select>
 
-    <select id="findById" resultType="Seckill">
+    <select id="findById" resultType="com.xxq.infrastructure.persistence.entity.Seckill">
         SELECT * FROM seckill WHERE seckill_id = #{id}
     </select>
 

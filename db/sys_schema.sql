@@ -36,4 +36,14 @@ CREATE TABLE `seckill_order`(
   PRIMARY KEY (`seckill_id`, `user_phone`) /*联合主键，保证一个用户只能秒杀一件商品*/
 ) CHARSET=utf8 ENGINE=InnoDB COMMENT '秒杀订单表';
 
+CREATE TABLE `t_mock_goods` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL COMMENT '商品名称',
+  `price` decimal(25,2) NOT NULL COMMENT '商品价格-单位元',
+  `customer_Id` bigint(11) NOT NULL COMMENT '商品主人',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '平台商品表';
+
 

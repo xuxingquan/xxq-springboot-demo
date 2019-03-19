@@ -1,14 +1,14 @@
 package cn.tycoding.controller;
 
-import cn.tycoding.dto.Exposer;
-import cn.tycoding.dto.SeckillExecution;
-import cn.tycoding.dto.SeckillResult;
-import cn.tycoding.entity.Seckill;
-import cn.tycoding.enums.SeckillStatEnum;
-import cn.tycoding.exception.RepeatKillException;
-import cn.tycoding.exception.SeckillCloseException;
-import cn.tycoding.exception.SeckillException;
-import cn.tycoding.service.SeckillService;
+import cn.tycoding.controller.response.ExposerResp;
+import cn.tycoding.controller.response.SeckillExecutionResp;
+import cn.tycoding.common.SeckillResult;
+import cn.tycoding.infrastructure.persistence.entity.Seckill;
+import cn.tycoding.common.enums.SeckillStatEnum;
+import cn.tycoding.common.exception.RepeatKillException;
+import cn.tycoding.common.exception.SeckillCloseException;
+import cn.tycoding.common.exception.SeckillException;
+import cn.tycoding.domain.service.SeckillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,14 +64,14 @@ public class SeckillController {
     @ResponseBody
     @RequestMapping(value = "/{seckillId}/exposer",
             method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    public SeckillResult<Exposer> exposer(@PathVariable("seckillId") Long seckillId) {
-        SeckillResult<Exposer> result;
+    public SeckillResult<ExposerResp> exposer(@PathVariable("seckillId") Long seckillId) {
+        SeckillResult<ExposerResp> result;
         try {
-            Exposer exposer = seckillService.exportSeckillUrl(seckillId);
-            result = new SeckillResult<Exposer>(true, exposer);
+            ExposerResp exposerResp = seckillService.exportSeckillUrl(seckillId);
+            result = new SeckillResult<>(exposerResp);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result = new SeckillResult<Exposer>(false, e.getMessage());
+            result = SeckillResult.create("1000", e.getMessage());
         }
         return result;
     }
@@ -80,25 +80,25 @@ public class SeckillController {
             method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
-                                                   @PathVariable("md5") String md5,
-                                                   @RequestParam("money") BigDecimal money,
-                                                   @CookieValue(value = "killPhone", required = false) Long userPhone) {
+    public SeckillResult<SeckillExecutionResp> execute(@PathVariable("seckillId") Long seckillId,
+                                                       @PathVariable("md5") String md5,
+                                                       @RequestParam("money") BigDecimal money,
+                                                       @CookieValue(value = "killPhone", required = false) Long userPhone) {
         if (userPhone == null) {
-            return new SeckillResult<SeckillExecution>(false, "未注册");
+            return SeckillResult.create("1000", "未注册");
         }
         try {
-            SeckillExecution execution = seckillService.executeSeckill(seckillId, money, userPhone, md5);
-            return new SeckillResult<SeckillExecution>(true, execution);
+            SeckillExecutionResp execution = seckillService.executeSeckill(seckillId, money, userPhone, md5);
+            return new SeckillResult(execution);
         } catch (RepeatKillException e) {
-            SeckillExecution seckillExecution = new SeckillExecution(seckillId, SeckillStatEnum.REPEAT_KILL);
-            return new SeckillResult<SeckillExecution>(true, seckillExecution);
+            SeckillExecutionResp seckillExecutionResp = new SeckillExecutionResp(seckillId, SeckillStatEnum.REPEAT_KILL);
+            return new SeckillResult<>(seckillExecutionResp);
         } catch (SeckillCloseException e) {
-            SeckillExecution seckillExecution = new SeckillExecution(seckillId, SeckillStatEnum.END);
-            return new SeckillResult<SeckillExecution>(true, seckillExecution);
+            SeckillExecutionResp seckillExecutionResp = new SeckillExecutionResp(seckillId, SeckillStatEnum.END);
+            return new SeckillResult<>(seckillExecutionResp);
         } catch (SeckillException e) {
-            SeckillExecution seckillExecution = new SeckillExecution(seckillId, SeckillStatEnum.INNER_ERROR);
-            return new SeckillResult<SeckillExecution>(true, seckillExecution);
+            SeckillExecutionResp seckillExecutionResp = new SeckillExecutionResp(seckillId, SeckillStatEnum.INNER_ERROR);
+            return new SeckillResult(seckillExecutionResp);
         }
     }
 
@@ -106,6 +106,6 @@ public class SeckillController {
     @GetMapping(value = "/time/now")
     public SeckillResult<Long> time() {
         Date now = new Date();
-        return new SeckillResult(true, now.getTime());
+        return new SeckillResult(now.getTime());
     }
 }

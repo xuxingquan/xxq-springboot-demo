@@ -84,7 +84,7 @@ mybatis:
 # 打印sql
 logging:
   level:
-    cn.tycoding.mapper: DEBUG
+    com.xxq.infrastructure.persistence.mapper: DEBUG
 
 
 

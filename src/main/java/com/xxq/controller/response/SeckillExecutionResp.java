@@ -2,23 +2,20 @@ package com.xxq.controller.response;
 
 import com.xxq.infrastructure.persistence.entity.SeckillOrder;
 import com.xxq.common.enums.SeckillStatEnum;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 封装执行秒杀后的结果
- *
- * @auther TyCoding
- * @date 2018/10/8
  */
+@Getter
+@Setter
 public class SeckillExecutionResp {
-
     private Long seckillId;
-
     //秒杀执行结果状态
     private int state;
-
     //状态表示
     private String stateInfo;
-
     //秒杀成功的订单对象
     private SeckillOrder seckillOrder;
 
@@ -33,38 +30,6 @@ public class SeckillExecutionResp {
         this.seckillId = seckillId;
         this.state = seckillStatEnum.getState();
         this.stateInfo = seckillStatEnum.getStateInfo();
-    }
-
-    public Long getSeckillId() {
-        return seckillId;
-    }
-
-    public void setSeckillId(Long seckillId) {
-        this.seckillId = seckillId;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public String getStateInfo() {
-        return stateInfo;
-    }
-
-    public void setStateInfo(String stateInfo) {
-        this.stateInfo = stateInfo;
-    }
-
-    public SeckillOrder getSeckillOrder() {
-        return seckillOrder;
-    }
-
-    public void setSeckillOrder(SeckillOrder seckillOrder) {
-        this.seckillOrder = seckillOrder;
     }
 
     @Override

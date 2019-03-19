@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 秒杀商品的控制层
@@ -84,9 +85,10 @@ public class SeckillController {
                                                        @PathVariable("md5") String md5,
                                                        @RequestParam("money") BigDecimal money,
                                                        @CookieValue(value = "killPhone", required = false) Long userPhone) {
-        if (userPhone == null) {
+        if (Objects.isNull(userPhone)) {
             return SeckillResult.create("1000", "未注册");
         }
+
         try {
             SeckillExecutionResp execution = seckillService.executeSeckill(seckillId, money, userPhone, md5);
             return new SeckillResult(execution);

@@ -37,22 +37,17 @@ public class CustomizedRedisCache extends RedisCache {
 
     ThreadAwaitContainer container = new ThreadAwaitContainer();
 
-    @SuppressWarnings("rawtypes")
     private final RedisOperations redisOperations;
-
     private final byte[] prefix;
-
     /**
      * 缓存主动在失效前强制刷新缓存的时间
      * 单位：秒
      */
     private long preloadSecondTime = 0;
-
     /**
      * 缓存有效时间
      */
     private long expirationSecondTime;
-
     /**
      * 是否强制刷新（走数据库），默认是false
      */

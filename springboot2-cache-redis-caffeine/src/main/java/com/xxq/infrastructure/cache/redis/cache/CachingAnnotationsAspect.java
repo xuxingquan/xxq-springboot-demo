@@ -19,8 +19,6 @@ import java.util.*;
 
 /**
  * 缓存拦截，用于注册方法信息
- *
- * @author yuhao.wang
  */
 @Aspect
 @Component

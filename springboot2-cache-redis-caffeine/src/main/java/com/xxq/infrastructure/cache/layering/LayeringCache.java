@@ -15,9 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-/**
- * @author yuhao.wang
- */
 public class LayeringCache extends AbstractValueAdaptingCache {
     Logger logger = LoggerFactory.getLogger(LayeringCache.class);
     /**
@@ -109,7 +106,6 @@ public class LayeringCache extends AbstractValueAdaptingCache {
         return value;
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
     public <T> T get(Object key, Callable<T> valueLoader) {
         T value = null;

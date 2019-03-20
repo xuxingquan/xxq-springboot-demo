@@ -1,6 +1,9 @@
 package com.xxq.infrastructure.cache.redis.cache;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,6 +16,8 @@ import java.util.List;
  *
  * @author yuhao.wang
  */
+@Getter
+@Setter
 public final class CachedMethodInvocation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -39,47 +44,6 @@ public final class CachedMethodInvocation implements Serializable {
             }
         }
     }
-
-    public Object getKey() {
-        return key;
-    }
-
-    public void setKey(Object key) {
-        this.key = key;
-    }
-
-    public String getTargetBean() {
-        return targetBean;
-    }
-
-    public void setTargetBean(String targetBean) {
-        this.targetBean = targetBean;
-    }
-
-    public String getTargetMethod() {
-        return targetMethod;
-    }
-
-    public void setTargetMethod(String targetMethod) {
-        this.targetMethod = targetMethod;
-    }
-
-    public List<Object> getArguments() {
-        return arguments;
-    }
-
-    public void setArguments(List<Object> arguments) {
-        this.arguments = arguments;
-    }
-
-    public List<String> getParameterTypes() {
-        return parameterTypes;
-    }
-
-    public void setParameterTypes(List<String> parameterTypes) {
-        this.parameterTypes = parameterTypes;
-    }
-
     /**
      * 必须重写equals和hashCode方法，否则放到set集合里没法去重
      *

@@ -18,7 +18,7 @@ public final class RedisTemplateUtils {
         if (redisTemplate == null) {
             synchronized (RedisTemplateUtils.class) {
                 if (redisTemplate == null) {
-                    redisTemplate = new RedisTemplate<String, Object>();
+                    redisTemplate = new RedisTemplate<>();
                     redisTemplate.setConnectionFactory(redisConnectionFactory);
 
                     JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();

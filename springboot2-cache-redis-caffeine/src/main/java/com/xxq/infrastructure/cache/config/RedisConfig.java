@@ -16,12 +16,8 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
-/**
- * @author yuhao.wang
- */
 @Configuration
 public class RedisConfig {
-
     /**
      * 重写Redis序列化方式，使用Json方式:
      * 当我们的数据存储到Redis的时候，我们的键（key）和值（value）都是通过Spring提供的Serializer序列化到数据库的。RedisTemplate默认使用的是JdkSerializationRedisSerializer，StringRedisTemplate默认使用的是StringRedisSerializer。
@@ -65,7 +61,6 @@ public class RedisConfig {
     @Bean
     RedisMessageListenerContainer redisContainer(RedisConnectionFactory redisConnectionFactory, MessageListenerAdapter messageListener) {
         final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-
         container.setConnectionFactory(redisConnectionFactory);
         container.addMessageListener(messageListener, ChannelTopicEnum.REDIS_CACHE_DELETE_TOPIC.getChannelTopic());
         container.addMessageListener(messageListener, ChannelTopicEnum.REDIS_CACHE_CLEAR_TOPIC.getChannelTopic());

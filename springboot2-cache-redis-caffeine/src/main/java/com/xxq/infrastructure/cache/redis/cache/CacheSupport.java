@@ -5,8 +5,6 @@ import java.util.Set;
 
 /**
  * 注册和刷新缓存接口
- *
- * @author yuhao.wang
  */
 public interface CacheSupport {
 

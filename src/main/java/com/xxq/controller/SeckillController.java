@@ -2,7 +2,7 @@ package com.xxq.controller;
 
 import com.xxq.controller.response.ExposerResp;
 import com.xxq.controller.response.SeckillExecutionResp;
-import com.xxq.common.SeckillResult;
+import com.xxq.common.BaseResult;
 import com.xxq.infrastructure.persistence.entity.Seckill;
 import com.xxq.common.enums.SeckillStatEnum;
 import com.xxq.common.exception.RepeatKillException;
@@ -57,14 +57,14 @@ public class SeckillController {
     @ResponseBody
     @RequestMapping(value = "/{seckillId}/exposer",
             method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    public SeckillResult<ExposerResp> exposer(@PathVariable("seckillId") Long seckillId) {
-        SeckillResult<ExposerResp> result;
+    public BaseResult<ExposerResp> exposer(@PathVariable("seckillId") Long seckillId) {
+        BaseResult<ExposerResp> result;
         try {
             ExposerResp exposerResp = seckillService.exportSeckillUrl(seckillId);
-            result = new SeckillResult<>(exposerResp);
+            result = new BaseResult<>(exposerResp);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result = SeckillResult.create("1000", e.getMessage());
+            result = BaseResult.create("1000", e.getMessage());
         }
         return result;
     }
@@ -73,33 +73,33 @@ public class SeckillController {
             method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public SeckillResult<SeckillExecutionResp> execute(@PathVariable("seckillId") Long seckillId,
-                                                       @PathVariable("md5") String md5,
-                                                       @RequestParam("money") BigDecimal money,
-                                                       @CookieValue(value = "killPhone", required = false) Long userPhone) {
+    public BaseResult<SeckillExecutionResp> execute(@PathVariable("seckillId") Long seckillId,
+                                                    @PathVariable("md5") String md5,
+                                                    @RequestParam("money") BigDecimal money,
+                                                    @CookieValue(value = "killPhone", required = false) Long userPhone) {
         if (Objects.isNull(userPhone)) {
-            return SeckillResult.create("1000", "未注册");
+            return BaseResult.create("1000", "未注册");
         }
 
         try {
             SeckillExecutionResp execution = seckillService.executeSeckill(seckillId, money, userPhone, md5);
-            return new SeckillResult(execution);
+            return new BaseResult(execution);
         } catch (RepeatKillException e) {
             SeckillExecutionResp seckillExecutionResp = new SeckillExecutionResp(seckillId, SeckillStatEnum.REPEAT_KILL);
-            return new SeckillResult<>(seckillExecutionResp);
+            return new BaseResult<>(seckillExecutionResp);
         } catch (SeckillCloseException e) {
             SeckillExecutionResp seckillExecutionResp = new SeckillExecutionResp(seckillId, SeckillStatEnum.END);
-            return new SeckillResult<>(seckillExecutionResp);
+            return new BaseResult<>(seckillExecutionResp);
         } catch (SeckillException e) {
             SeckillExecutionResp seckillExecutionResp = new SeckillExecutionResp(seckillId, SeckillStatEnum.INNER_ERROR);
-            return new SeckillResult(seckillExecutionResp);
+            return new BaseResult(seckillExecutionResp);
         }
     }
 
     @ResponseBody
     @GetMapping(value = "/time/now")
-    public SeckillResult<Long> time() {
+    public BaseResult<Long> time() {
         Date now = new Date();
-        return new SeckillResult(now.getTime());
+        return new BaseResult(now.getTime());
     }
 }

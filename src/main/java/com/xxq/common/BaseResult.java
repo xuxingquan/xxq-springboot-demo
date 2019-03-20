@@ -10,37 +10,37 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SeckillResult<T> {
+public class BaseResult<T> {
 
     private T data;
     private String code;// 0000 成功 9999 系统异常
     private String message;
 
-    public SeckillResult(T data) {
+    public BaseResult(T data) {
         this.code = "0000";
         this.data = data;
         this.message = "成功";
     }
 
-    public SeckillResult(String code, String message,T data) {
+    public BaseResult(String code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public static <T> SeckillResult<T> create(String code, String message, T data) {
-        return new SeckillResult(code, message, data);
+    public static <T> BaseResult<T> create(String code, String message, T data) {
+        return new BaseResult(code, message, data);
     }
 
-    public static <T> SeckillResult<T> create(String code, String message) {
-        return new SeckillResult(code, message, null);
+    public static <T> BaseResult<T> create(String code, String message) {
+        return new BaseResult(code, message, null);
     }
 
-    public static <T> SeckillResult<T> ok(T data) {
-        return new SeckillResult(data);
+    public static <T> BaseResult<T> ok(T data) {
+        return new BaseResult(data);
     }
 
-    public static SeckillResult<Void> ok() {
+    public static BaseResult<Void> ok() {
         return ok(null);
     }
 

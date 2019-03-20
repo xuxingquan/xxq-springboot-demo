@@ -8,6 +8,8 @@ import com.xxq.controller.response.GoodsResp;
 import com.xxq.domain.service.GoodsService;
 import com.xxq.domain.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,8 @@ import java.util.Objects;
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private MessageSource messageSource;
     @ResponseBody
     @PostMapping(value = "/add")
     public BaseResult<Boolean> add(GoodsInsertReq request) {
@@ -56,7 +60,7 @@ public class GoodsController {
     @GetMapping(value = "/query-by-id")
     public BaseResult<GoodsResp> queryById(String id) {
         GoodsVo vo = goodsService.queryByid(Long.valueOf(id));
-        if (vo == null) return BaseResult.create("7001","商品不存在");
+        if (vo == null) return BaseResult.create("3000",messageSource.getMessage("3000",new Object[]{id},null));
         GoodsResp response = new GoodsResp();
         response.setId(id);
         response.setName(vo.getName());

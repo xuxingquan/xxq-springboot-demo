@@ -47,16 +47,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         };
     }
 
-//    @Bean
-//    public JedisPoolConfig jedisPoolConfig(){
-//        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-//        jedisPoolConfig.setMaxIdle(redisSetting.getMaxIdle());
-//        jedisPoolConfig.setMinIdle(redisSetting.getMinIdle());
-//        jedisPoolConfig.setMaxTotal(redisSetting.getMaxActive());
-//        jedisPoolConfig.setMaxWaitMillis(redisSetting.getMaxWaitMillis());
-//        return jedisPoolConfig;
-//    }
-
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();

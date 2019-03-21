@@ -1,5 +1,6 @@
 package com.xxq.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.xxq.common.BaseResult;
 import com.xxq.common.util.DateUtil;
 import com.xxq.controller.request.GoodsInsertReq;
@@ -8,15 +9,13 @@ import com.xxq.controller.response.GoodsResp;
 import com.xxq.domain.service.GoodsService;
 import com.xxq.domain.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -28,7 +27,7 @@ public class GoodsController {
     private MessageSource messageSource;
     @ResponseBody
     @PostMapping(value = "/add")
-    public BaseResult<Boolean> add(GoodsInsertReq request) {
+    public BaseResult<Boolean> add(@Valid GoodsInsertReq request) {
         GoodsVo vo = new GoodsVo();
         vo.setName(request.getName());
         vo.setPrice(new BigDecimal(request.getPrice()));
@@ -39,14 +38,14 @@ public class GoodsController {
 
     @ResponseBody
     @GetMapping(value = "/delete")
-    public BaseResult<Boolean> delete(String id) {
+    public BaseResult<Boolean> delete(@RequestParam String id) {
         Boolean isSuccess = goodsService.deleteByid(Long.valueOf(id));
         return BaseResult.ok(isSuccess);
     }
 
     @ResponseBody
     @PostMapping(value = "/update")
-    public BaseResult<Boolean> update(GoodsUpdateReq request) {
+    public BaseResult<Boolean> update(@RequestBody GoodsUpdateReq request) {
         GoodsVo vo = new GoodsVo();
         vo.setId(Long.valueOf(request.getId()));
         vo.setName(request.getName());
@@ -58,7 +57,7 @@ public class GoodsController {
 
     @ResponseBody
     @GetMapping(value = "/query-by-id")
-    public BaseResult<GoodsResp> queryById(String id) {
+    public BaseResult<GoodsResp> queryById(@RequestParam String id) {
         GoodsVo vo = goodsService.queryByid(Long.valueOf(id));
         if (vo == null) return BaseResult.create("3000",messageSource.getMessage("3000",new Object[]{id},null));
         GoodsResp response = new GoodsResp();
@@ -66,9 +65,17 @@ public class GoodsController {
         response.setName(vo.getName());
         response.setPrice(vo.getPrice().toString());
         response.setCustomerId(vo.getCustomerId().toString());
-        response.setUpdateTime(DateUtil.format(vo.getCreateTime()));
-        response.setCreateTime(DateUtil.format(vo.getUpdateTime()));
+        response.setUpdateTime(DateUtil.defaultFormat(vo.getCreateTime()));
+        response.setCreateTime(DateUtil.defaultFormat(vo.getUpdateTime()));
         return BaseResult.ok(response);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/query-by-page")
+    public BaseResult<PageInfo> queryByPage(@RequestParam int currentPage,
+                                            @RequestParam int pageSize) {
+        PageInfo pageInfo = goodsService.queryByPage(currentPage, pageSize);
+        return BaseResult.ok(pageInfo);
     }
 
 }

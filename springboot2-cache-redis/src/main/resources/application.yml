@@ -86,7 +86,12 @@ logging:
   level:
     com.xxq.infrastructure.persistence.mapper: DEBUG
 
-
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: true
+  params: count=countSql
 
 
 

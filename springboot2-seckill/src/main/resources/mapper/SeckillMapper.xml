@@ -8,6 +8,14 @@
         SELECT * FROM seckill
     </select>
 
+    <select id="findByPage" parameterType="map" resultType="com.xxq.infrastructure.persistence.entity.Seckill">
+        SELECT * FROM seckill
+    </select>
+
+    <select id="findByPage2" resultType="com.xxq.infrastructure.persistence.entity.Seckill">
+        SELECT * FROM seckill
+    </select>
+
     <select id="findById" resultType="com.xxq.infrastructure.persistence.entity.Seckill">
         SELECT * FROM seckill WHERE seckill_id = #{id}
     </select>

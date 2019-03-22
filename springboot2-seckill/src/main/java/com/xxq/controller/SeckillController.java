@@ -102,4 +102,18 @@ public class SeckillController {
         Date now = new Date();
         return new BaseResult(now.getTime());
     }
+
+    @ResponseBody
+    @GetMapping(value = "/findByPage")
+    public BaseResult<List<Seckill>> findByPage(int currPage,int pageSize ) {
+        List<Seckill> seckills = seckillService.findByPage(currPage, pageSize);
+        return new BaseResult(seckills);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/findByPage2")
+    public BaseResult<List<Seckill>> findByPage2(int currPage,int pageSize ) {
+        List<Seckill> seckills = seckillService.findByPage2(currPage, pageSize);
+        return new BaseResult(seckills);
+    }
 }

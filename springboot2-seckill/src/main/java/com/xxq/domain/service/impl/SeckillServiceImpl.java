@@ -12,6 +12,8 @@ import com.xxq.infrastructure.persistence.mapper.SeckillMapper;
 import com.xxq.infrastructure.persistence.mapper.SeckillOrderMapper;
 import com.xxq.domain.service.SeckillService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.map.HashedMap;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.util.DigestUtils;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SeckillServiceImpl implements SeckillService {
@@ -153,5 +156,24 @@ public class SeckillServiceImpl implements SeckillService {
             //所有编译期异常，转换为运行期异常
             throw new SeckillException("seckill inner error:" + e.getMessage());
         }
+    }
+
+    @Override
+    public List<Seckill> findByPage(int currPage, int pageSize) {
+        Map<String, Object> data = new HashedMap<>();
+        data.put("currPage", currPage);
+        data.put("pageSize", pageSize);
+        return seckillMapper.findByPage(data);
+    }
+
+    /**
+     * 每次还是全量查询，在内存中筛选,有内存溢出风险  推荐用PageHelper
+     * @param currPage
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<Seckill> findByPage2(int currPage, int pageSize) {
+        return seckillMapper.findByPage2(new RowBounds(currPage,pageSize));
     }
 }

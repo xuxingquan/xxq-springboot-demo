@@ -3,9 +3,11 @@ package com.xxq.infrastructure.persistence.mapper;
 import com.xxq.infrastructure.persistence.entity.Seckill;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SeckillMapper {
@@ -14,6 +16,17 @@ public interface SeckillMapper {
      * @return
      */
     List<Seckill> findAll();
+    /**
+     * 查询所有秒杀商品的记录信息
+     * @return
+     */
+    List<Seckill> findByPage(Map date);
+    /**
+     * 查询所有秒杀商品的记录信息
+     * @return
+     */
+    List<Seckill> findByPage2(RowBounds rowBounds);
+
     /**
      * 根据主键查询当前秒杀商品的数据
      * @param id

@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
     @Autowired
     private MessageSource messageSource;
 
     @ExceptionHandler(value = Exception.class)
     public Object errorHandler(Exception e) {
         log.error("exception=", e);
-        BaseResult response = new BaseResult("9999", e.getMessage(), null);
-        return response;
+        return new BaseResult("9999", e.getMessage(), null);
     }
 
     @ExceptionHandler(value = BizFailException.class)
@@ -32,7 +32,6 @@ public class GlobalExceptionHandler {
         if (StringUtils.isBlank(message)) {
             message = messageSource.getMessage(e.getErrorCode(), null, null);
         }
-        BaseResult response = new BaseResult(e.getErrorCode(), message, null);
-        return response;
+        return new BaseResult(e.getErrorCode(), message, null);
     }
 }

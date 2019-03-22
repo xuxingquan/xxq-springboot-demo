@@ -13,7 +13,7 @@ package com.xxq.domain;
  10.swagger2
  11.多数据源
  12.读写分离
- 13.
+ 13.spring boot 分布式事务解决方案LCN
  14.
 
 

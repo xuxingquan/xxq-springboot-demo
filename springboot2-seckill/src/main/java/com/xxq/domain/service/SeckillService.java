@@ -24,6 +24,18 @@ public interface SeckillService {
      */
     List<Seckill> findAll();
     /**
+     * 获取所有的秒杀商品列表
+     *
+     * @return
+     */
+    List<Seckill> findByPage(int currPage,int pageSize);
+    /**
+     * 获取所有的秒杀商品列表
+     *
+     * @return
+     */
+    List<Seckill> findByPage2(int currPage,int pageSize);
+    /**
      * 获取某一条商品秒杀信息
      *
      * @param seckillId

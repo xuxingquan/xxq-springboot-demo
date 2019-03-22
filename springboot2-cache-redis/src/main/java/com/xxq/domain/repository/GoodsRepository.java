@@ -8,6 +8,7 @@ import com.xxq.infrastructure.persistence.entity.GoodsExample;
 import com.xxq.infrastructure.persistence.mapper.GoodsMapper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -32,7 +33,7 @@ public class GoodsRepository {
     @Cacheable(value = "goods",key = "#id",unless = "#result == null")//可能会有缓存击穿问题
     public GoodsVo queryByid(@NonNull Long id){
         Goods goods = goodsMapper.selectByPrimaryKey(id);
-        log.info("queryGoodsVoByid,id={}", Objects.nonNull(goods) ? goods.getId() : "");
+        log.info("queryGoodsVoByid,id={}", Objects.nonNull(goods) ? goods.getId() : StringUtils.EMPTY);
         return WrappedBeanCopier.copyProperties(goods,GoodsVo.class);
     }
 

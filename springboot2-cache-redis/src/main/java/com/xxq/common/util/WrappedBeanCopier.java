@@ -1,12 +1,11 @@
 package com.xxq.common.util;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.cglib.beans.BeanCopier;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -14,40 +13,35 @@ import java.util.concurrent.ConcurrentMap;
  * @author jerry.xu.coc
  */
 public class WrappedBeanCopier {
-	
+
     private static final ConcurrentMap<String, BeanCopier> beanCopierCache = new ConcurrentHashMap<>();
-	private static final ConcurrentMap<String,Constructor> constructorAccessCache = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Constructor> constructorAccessCache = new ConcurrentHashMap<>();
 
     private static void copyProperties(Object source, Object target) {
         BeanCopier copier = getBeanCopier(source.getClass(), target.getClass());
         copier.copy(source, target, null);
     }
 
-	private static BeanCopier getBeanCopier(Class sourceClass, Class targetClass) {
+    private static BeanCopier getBeanCopier(Class sourceClass, Class targetClass) {
         String beanKey = generateKey(sourceClass, targetClass);
-        BeanCopier copier = null;
-        if (!beanCopierCache.containsKey(beanKey)) {
-            copier = BeanCopier.create(sourceClass, targetClass, false);
-            beanCopierCache.putIfAbsent(beanKey, copier);
-        } else {
-            copier = beanCopierCache.get(beanKey);
-        }
-        return copier;
+        return beanCopierCache.computeIfAbsent(beanKey,
+                (key) -> BeanCopier.create(sourceClass, targetClass, false));
     }
 
     private static String generateKey(Class<?> class1, Class<?> class2) {
-        return class1.toString() + class2.toString();
+            return class1.toString() + class2.toString();
     }
 
     public static <T> T copyProperties(Object source, Class<T> targetClass) {
-        if (source == null || targetClass == null){
+        if (!ObjectUtils.anyNotNull(source, targetClass)) {
             return null;
         }
-        T t = null;
+        T t;
         try {
             t = targetClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(String.format("Create new instance of %s failed: %s", targetClass, e.getMessage()));
+            String message = "Create new instance of %s failed: %s";
+            throw new RuntimeException(String.format(message, targetClass, e.getMessage()));
         }
         copyProperties(source, t);
         return t;
@@ -59,32 +53,35 @@ public class WrappedBeanCopier {
         }
         Constructor<T> constructorAccess = getConstructorAccess(targetClass);
         List<T> resultList = new ArrayList<>(sourceList.size());
-        for (Object o : sourceList) {
-            T t = null;
-            try {
-                t = constructorAccess.newInstance();
-                copyProperties(o, t);
-                resultList.add(t);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+        sourceList.stream().forEach(o -> {
+                    try {
+                        T t = constructorAccess.newInstance();
+                        copyProperties(o, t);
+                        resultList.add(t);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
         return resultList;
     }
 
-	private static <T> Constructor<T> getConstructorAccess(Class<T> targetClass) {
+    private static <T> Constructor<T> getConstructorAccess(Class<T> targetClass) {
+
         Constructor<T> constructorAccess = constructorAccessCache.get(targetClass.toString());
-        if(constructorAccess != null) {
+        if (Objects.nonNull(constructorAccess)) {
             return constructorAccess;
         }
+
         try {
             constructorAccess = targetClass.getConstructor();
             constructorAccess.newInstance();
-            constructorAccessCache.putIfAbsent(targetClass.toString(),constructorAccess);
+            constructorAccessCache.putIfAbsent(targetClass.toString(), constructorAccess);
         } catch (Exception e) {
-            throw new RuntimeException(String.format("Create new instance of %s failed: %s", targetClass, e.getMessage()));
+            String message = "Create new instance of %s failed: %s";
+            throw new RuntimeException(String.format(message, targetClass, e.getMessage()));
         }
-        return constructorAccess;	
+        return constructorAccess;
     }
 
 }

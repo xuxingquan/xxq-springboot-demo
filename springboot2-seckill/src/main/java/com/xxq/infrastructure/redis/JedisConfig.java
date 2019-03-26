@@ -1,4 +1,4 @@
-package cn.tycoding.infrastructure.redis;
+package com.xxq.infrastructure.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

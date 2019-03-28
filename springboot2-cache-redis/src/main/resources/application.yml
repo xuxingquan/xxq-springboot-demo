@@ -28,6 +28,9 @@ spring:
     port: 5672
     username: root123
     password: 123456
+    #消息发送到交换机确认机制,是否确认回调
+    publisher-confirms: true
+    virtual-host: root123
 
   thymeleaf:
     prefix: classpath:/templates/

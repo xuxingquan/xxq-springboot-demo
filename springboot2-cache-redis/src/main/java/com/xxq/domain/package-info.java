@@ -9,12 +9,13 @@ package com.xxq.domain;
  6.敏感信息的加解密或脱敏
  7.向第三方的http请求管理
  8.打印出参、入参、异常及接口响应耗时
- 9.分页
+ 9.分页    --已集成
  10.swagger2
  11.多数据源
  12.读写分离
  13.spring boot 分布式事务解决方案LCN
- 14.
+ 14.rabbitMq   --已经集成
+ 15.mybatis多数据源或多环境切换
 
 
 

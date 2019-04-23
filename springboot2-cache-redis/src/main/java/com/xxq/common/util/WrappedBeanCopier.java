@@ -33,7 +33,7 @@ public class WrappedBeanCopier {
     }
 
     public static <T> T copyProperties(Object source, Class<T> targetClass) {
-        if (!ObjectUtils.anyNotNull(source, targetClass)) {
+        if (!ObjectUtils.allNotNull(source, targetClass)) {
             return null;
         }
         T t;

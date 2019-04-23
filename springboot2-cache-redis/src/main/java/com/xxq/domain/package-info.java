@@ -8,7 +8,7 @@ package com.xxq.domain;
  5.参数注解检验
  6.敏感信息的加解密或脱敏
  7.向第三方的http请求管理
- 8.打印出参、入参、异常及接口响应耗时
+ 8.打印出参、入参、异常及接口响应耗时  --HttpLogRecordAspect
  9.分页    --已集成
  10.swagger2
  11.多数据源

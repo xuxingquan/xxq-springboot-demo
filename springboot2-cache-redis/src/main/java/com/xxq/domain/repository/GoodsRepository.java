@@ -31,7 +31,7 @@ public class GoodsRepository {
     @Autowired
     private GoodsMapper goodsMapper;
 
-    @Cacheable(value = "goods", key = "#id", unless = "#result == null")//可能会有缓存击穿问题
+    @Cacheable(value = "goods", key = "#id", unless = "#result == null")//可能会有缓存穿透问题
     public GoodsVo queryByid(@NonNull Long id) {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
         log.info("queryGoodsVoByid,id={}", Objects.nonNull(goods) ? goods.getId() : StringUtils.EMPTY);

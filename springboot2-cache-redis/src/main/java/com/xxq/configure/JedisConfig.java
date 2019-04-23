@@ -1,4 +1,4 @@
-package com.xxq.infrastructure.redis;
+package com.xxq.configure;
 
 import lombok.Getter;
 import lombok.Setter;

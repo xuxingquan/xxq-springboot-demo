@@ -39,6 +39,4 @@ public class DateUtil {
         ZonedDateTime zdt = dateTime.atZone(zoneId);
         return Date.from(zdt.toInstant());
     }
-
-
 }

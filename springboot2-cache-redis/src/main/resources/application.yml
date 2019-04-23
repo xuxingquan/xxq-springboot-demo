@@ -76,6 +76,12 @@ spring:
         max-idle: 8
         # 连接池中的最小空闲连接
         min-idle: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
 
 #mybatis配置
 mybatis:

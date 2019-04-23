@@ -22,7 +22,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public Object errorHandler(Exception e) {
-        log.error("exception=", e);
         return new BaseResult("9999", e.getMessage(), null);
     }
 

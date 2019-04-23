@@ -2,6 +2,9 @@ package com.xxq.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xxq.common.BaseResult;
+import com.xxq.common.annotation.DistributLock;
+import com.xxq.common.annotation.DistributLockParam;
+import com.xxq.common.annotation.Limit;
 import com.xxq.common.util.DateUtil;
 import com.xxq.controller.request.GoodsInsertReq;
 import com.xxq.controller.request.GoodsUpdateReq;
@@ -17,6 +20,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/goods")
@@ -38,8 +42,14 @@ public class GoodsController {
 
     @ResponseBody
     @GetMapping(value = "/delete")
-    public BaseResult<Boolean> delete(@RequestParam String id) {
+    @DistributLock(prefix = "goods")//分布式锁
+    public BaseResult<Boolean> delete(@DistributLockParam(name = "id") @RequestParam String id) {
         Boolean isSuccess = goodsService.deleteByid(Long.valueOf(id));
+        try {
+            TimeUnit.SECONDS.sleep(6);
+        } catch (Exception e){
+
+        }
         return BaseResult.ok(isSuccess);
     }
 
@@ -55,9 +65,10 @@ public class GoodsController {
         return BaseResult.ok(updated);
     }
 
+    @Limit(key = "goods_queryById", period = 100, count = 2)//分布式限流
     @ResponseBody
     @GetMapping(value = "/query-by-id")
-    public BaseResult<GoodsResp> queryById(@RequestParam String id) {
+    public BaseResult<GoodsResp> queryById( @RequestParam String id) {
         GoodsVo vo = goodsService.queryByid(Long.valueOf(id));
         if (vo == null) return BaseResult.create("3000",messageSource.getMessage("3000",new Object[]{id},null));
         GoodsResp response = new GoodsResp();
@@ -67,6 +78,7 @@ public class GoodsController {
         response.setCustomerId(vo.getCustomerId().toString());
         response.setUpdateTime(DateUtil.defaultFormat(vo.getCreateTime()));
         response.setCreateTime(DateUtil.defaultFormat(vo.getUpdateTime()));
+
         return BaseResult.ok(response);
     }
 

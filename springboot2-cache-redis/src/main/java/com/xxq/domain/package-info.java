@@ -1,8 +1,8 @@
 package com.xxq.domain;
 /**
 
- 1.message本地取配置文件
- 2.缓存注解化（多级缓存）
+ 1.message本地取配置文件 ---已集成
+ 2.缓存注解化（多级缓存、缓存处理器）
  3.异步任务与定时任务
  4.整合mock测试
  5.参数注解检验
@@ -11,11 +11,13 @@ package com.xxq.domain;
  8.打印出参、入参、异常及接口响应耗时  --HttpLogRecordAspect
  9.分页    --已集成
  10.swagger2
- 11.多数据源
+ 11.分布式锁
  12.读写分离
  13.spring boot 分布式事务解决方案LCN
  14.rabbitMq   --已经集成
  15.mybatis多数据源或多环境切换
+ 16.限流  LimitInterceptor
+ 17.
 
 
 

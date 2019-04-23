@@ -1,4 +1,4 @@
-package com.xxq.configure;
+package com.xxq.configure.aop;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Aspect
-@Configuration//定义一个切面
+@Configuration
 public class HttpLogRecordAspect {
     private static final Logger logger = LoggerFactory.getLogger(HttpLogRecordAspect.class);
     private static final String POST = "POST";
@@ -55,7 +55,8 @@ public class HttpLogRecordAspect {
         try {
             result = pjp.proceed();
         } catch (Exception e) {
-            logger.error("proceed exception,uri={},method={},params={},cost={}", new Object[]{uri, method, params,getCost(start)}, e);
+            String formatStr = "proceed exception,uri=%s,method=%s,params=%s,cost=%s";
+            logger.error(String.format(formatStr, uri, method, params,getCost(start)),e);
             throw e;
         }
 
@@ -70,17 +71,17 @@ public class HttpLogRecordAspect {
         /* 得到类中的所有属性集合 */
         Field[] fs = userCla.getDeclaredFields();
         for (int i = 0; i < fs.length; i++) {
-            Field f = fs[i];
-            f.setAccessible(true); // 设置些属性是可以访问的
+            Field field = fs[i];
+            field.setAccessible(true); // 设置些属性是可以访问的
             Object val;
             try {
-                val = f.get(obj);
+                val = field.get(obj);
                 // 得到此属性的值
-                map.put(f.getName(), val);// 设置键值
+                map.put(field.getName(), val);// 设置键值
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                logger.error("getKeyAndValue IllegalArgumentException",e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                logger.error("getKeyAndValue IllegalAccessException",e);
             }
         }
         return map;

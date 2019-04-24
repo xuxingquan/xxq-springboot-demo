@@ -28,7 +28,7 @@ public class LimitInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(LimitInterceptor.class);
     @Autowired
     private RedisTemplate<String, Serializable> limitRedisTemplate;
-    @Around("execution(public * *(..)) && @annotation(com.xxq.common.annotation.Limit)")
+    @Around("execution(* com.xxq.controller.*Controller.*(..)) && @annotation(com.xxq.common.annotation.Limit)")
     public Object interceptor(ProceedingJoinPoint pjp) {
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod();

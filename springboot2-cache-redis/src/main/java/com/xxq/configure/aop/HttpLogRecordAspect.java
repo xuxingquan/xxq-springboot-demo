@@ -1,13 +1,12 @@
 package com.xxq.configure.aop;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -20,8 +19,8 @@ import java.util.Map;
 
 @Aspect
 @Configuration
+@Slf4j(topic = "HttpLogRecord")
 public class HttpLogRecordAspect {
-    private static final Logger logger = LoggerFactory.getLogger(HttpLogRecordAspect.class);
     private static final String POST = "POST";
     private static final String GET = "GET";
     // 定义切点Pointcut
@@ -56,11 +55,11 @@ public class HttpLogRecordAspect {
             result = pjp.proceed();
         } catch (Exception e) {
             String formatStr = "proceed exception,uri=%s,method=%s,params=%s,cost=%s";
-            logger.error(String.format(formatStr, uri, method, params,getCost(start)),e);
+            log.error(String.format(formatStr, uri, method, params,getCost(start)),e);
             throw e;
         }
 
-        logger.info("proceed end,cost={},response={},uri={},method={},params={}",getCost(start), JSON.toJSONString(result), uri, method, params);
+        log.info("proceed end,cost={},response={},uri={},method={},params={}",getCost(start), JSON.toJSONString(result), uri, method, params);
         return result;
     }
 
@@ -79,9 +78,9 @@ public class HttpLogRecordAspect {
                 // 得到此属性的值
                 map.put(field.getName(), val);// 设置键值
             } catch (IllegalArgumentException e) {
-                logger.error("getKeyAndValue IllegalArgumentException",e);
+                log.error("getKeyAndValue IllegalArgumentException",e);
             } catch (IllegalAccessException e) {
-                logger.error("getKeyAndValue IllegalAccessException",e);
+                log.error("getKeyAndValue IllegalAccessException",e);
             }
         }
         return map;

@@ -24,7 +24,8 @@ public class HttpLogRecordAspect {
     private static final String POST = "POST";
     private static final String GET = "GET";
     // 定义切点Pointcut
-    @Pointcut("execution(* com.xxq.controller.*Controller.*(..))")
+    @Pointcut("@within(org.springframework.stereotype.Controller)")
+    //@Pointcut("execution(* com.xxq.controller.*Controller.*(..))")
     public void excudeService() {
     }
 
@@ -54,12 +55,12 @@ public class HttpLogRecordAspect {
         try {
             result = pjp.proceed();
         } catch (Exception e) {
-            String formatStr = "proceed exception,uri=%s,method=%s,params=%s,cost=%s";
+            String formatStr = "proceed exception,uri=%s,method=%s,params=[%s],cost=%s";
             log.error(String.format(formatStr, uri, method, params,getCost(start)),e);
             throw e;
         }
 
-        log.info("proceed end,cost={},response={},uri={},method={},params={}",getCost(start), JSON.toJSONString(result), uri, method, params);
+        log.info("proceed end,cost={},response={},uri={},method={},params=[{}]",getCost(start), JSON.toJSONString(result), uri, method, params);
         return result;
     }
 

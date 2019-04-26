@@ -21,7 +21,7 @@ public class DistributLockTool {
      */
     private static final String SET_WITH_EXPIRE_TIME = "PX";
     private static final Long RELEASE_SUCCESS = 1L;
-    private static final Integer EXPIRE_TIME = 5000;
+    private static final Integer EXPIRE_TIME = 5000;//5s
     /**
      * 尝试获取分布式锁
      * @param lockKey 锁

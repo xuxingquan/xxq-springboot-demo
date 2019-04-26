@@ -97,8 +97,10 @@ mybatis:
 
 # 打印sql
 logging:
+  config: classpath:log4j2.xml
   level:
     com.xxq.infrastructure.persistence.mapper: DEBUG
+
 
 pagehelper:
   helperDialect: mysql

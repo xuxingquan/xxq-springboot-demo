@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -46,7 +47,7 @@ public class GoodsController {
     public BaseResult<Boolean> delete(@DistributLockParam(name = "id") @RequestParam String id) {
         Boolean isSuccess = goodsService.deleteByid(Long.valueOf(id));
         try {
-            TimeUnit.SECONDS.sleep(6);
+            TimeUnit.SECONDS.sleep(ThreadLocalRandom.current().nextInt(10));
         } catch (Exception e){
 
         }
@@ -78,7 +79,6 @@ public class GoodsController {
         response.setCustomerId(vo.getCustomerId().toString());
         response.setUpdateTime(DateUtil.defaultFormat(vo.getCreateTime()));
         response.setCreateTime(DateUtil.defaultFormat(vo.getUpdateTime()));
-
         return BaseResult.ok(response);
     }
 

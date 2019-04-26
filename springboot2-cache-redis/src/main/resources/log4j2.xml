@@ -4,8 +4,8 @@
         <Console name="stdout" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%X{X-B3-TraceId},%X{X-B3-SpanId},%t] %-5level %C %L - %msg%n" />
         </Console>
-        <RollingRandomAccessFile name="logfile" fileName="/opt/log/app-finder-deal-core/app-finder-deal-core.log"
-                                 filePattern="/opt/log/app-finder-deal-core/app-finder-deal-core-%d{yyyy-MM-dd}.log.%i">
+        <RollingRandomAccessFile name="logfile" fileName="F:\logs\xxq-springboot-demo\xxq-springboot-demo.log"
+                                 filePattern="F:\logs\xxq-springboot-demo\xxq-springboot-demo-%d{yyyy-MM-dd}.log.%i">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%X{X-B3-TraceId},%X{X-B3-SpanId},%t] (%l)- %m%n</Pattern>
             </PatternLayout>
@@ -17,9 +17,10 @@
         </RollingRandomAccessFile>
     </Appenders>
     <Loggers>
-        <AsyncRoot level="info" includeLocation="true">
+        <AsyncRoot level="info" includeLocation="true" additivity="false">
             <AppenderRef ref="stdout" />
+            <AppenderRef ref="logfile" />
         </AsyncRoot>
-        <AsyncLogger name="org.apache.ibatis" level="debug" />
+        <AsyncLogger name="org.apache.ibatis" level="debug" additivity="false"/>
     </Loggers>
 </Configuration>

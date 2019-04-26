@@ -34,10 +34,8 @@ public class LimitInterceptor {
         Method method = signature.getMethod();
         Limit limitAnnotation = method.getAnnotation(Limit.class);
         LimitType limitType = limitAnnotation.limitType();
-        String name = limitAnnotation.name();
+
         String key;
-        int limitPeriod = limitAnnotation.period();
-        int limitCount = limitAnnotation.count();
         switch (limitType) {
             case IP:
                 key = getIpAddress();
@@ -52,10 +50,13 @@ public class LimitInterceptor {
 
         ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix(), key));
         try {
+            String name = limitAnnotation.name();
+            int limitCount = limitAnnotation.count();
+            int limitPeriod = limitAnnotation.period();
             String luaScript = buildLuaScript();
             RedisScript<Number> redisScript = new DefaultRedisScript<>(luaScript, Number.class);
             Number count = limitRedisTemplate.execute(redisScript, keys, limitCount, limitPeriod);
-            logger.info("Access try count is {} for name={} and key = {}", count, name, key);
+            logger.info("Access try count={},for name={},key={}", count, name, key);
             if (count != null && count.intValue() <= limitCount) {
                 return pjp.proceed();
             } else {

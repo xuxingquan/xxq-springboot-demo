@@ -14,12 +14,8 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties
 public class ConfigDomain {
-//    @Value("#{${redirectUrl}}")
-//    private Map<String,String> redirectUrl;
     @Value("#{${blogTopLinks}}")
     private Map<String, String> topLinks;
     @Value("#{'${blog-list}'.split(',')}")
     private List<Integer> list;
-
-
 }

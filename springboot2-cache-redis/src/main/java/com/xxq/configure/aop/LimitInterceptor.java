@@ -22,6 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+/**
+ * https://github.com/lxchinesszz/easy-sentinel
+ * 参考以上实例，重新改写分布式限流组件
+ */
 @Aspect
 @Configuration
 public class LimitInterceptor {
@@ -41,7 +45,6 @@ public class LimitInterceptor {
                 key = getIpAddress();
                 break;
             case CUSTOMER:
-                // TODO 如果此处想根据表达式或者一些规则生成 请看 一起来学Spring Boot | 第二十三篇：轻松搞定重复提交（分布式锁）
                 key = limitAnnotation.key();
                 break;
             default:

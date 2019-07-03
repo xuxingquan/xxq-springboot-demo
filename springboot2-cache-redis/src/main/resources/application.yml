@@ -123,4 +123,9 @@ pagehelper:
 #  maxRetries: 3
 #  #初始sleep时间 ,毫秒
 #  baseSleepTimeMs:  1000
-
+apollo:
+  bootstrap:
+    enabled: true
+  meta: http://localhost:4080
+app:
+  id: 1212

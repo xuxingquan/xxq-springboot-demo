@@ -1,6 +1,7 @@
 package com.xxq.controller;
 
 import com.xxq.common.BaseResult;
+import com.xxq.configure.ApolloConfigBean;
 import com.xxq.configure.ConfigDomain;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class DemoController {
     @Autowired
     private ConfigDomain domain;
+    @Autowired
+    private ApolloConfigBean apolloConfigBean;
     @ResponseBody
     @GetMapping(value = "/add")
     public BaseResult<Boolean> add() {
@@ -30,4 +33,10 @@ public class DemoController {
         return BaseResult.ok(true);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getconf")
+    public BaseResult<Boolean> getconf() {
+        boolean supported = apolloConfigBean.isSupported();
+        return BaseResult.ok(supported);
+    }
 }

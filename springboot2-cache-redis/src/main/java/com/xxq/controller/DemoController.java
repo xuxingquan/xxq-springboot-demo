@@ -1,5 +1,7 @@
 package com.xxq.controller;
 
+import com.ctrip.framework.apollo.Config;
+import com.ctrip.framework.apollo.ConfigService;
 import com.xxq.common.BaseResult;
 import com.xxq.configure.ApolloConfigBean;
 import com.xxq.configure.ConfigDomain;
@@ -7,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 @Slf4j
@@ -35,8 +34,15 @@ public class DemoController {
 
     @ResponseBody
     @RequestMapping(value = "/getconf")
-    public BaseResult<Boolean> getconf() {
+    public BaseResult<Boolean> getconf(@RequestParam(defaultValue = "0") Long userId,
+                                       @RequestParam(defaultValue = "0") Integer appId,
+                                       @RequestParam(defaultValue = "0") Long userid) {
+        System.out.println("userId="+userId+",appId="+appId+",userid="+userid);
         boolean supported = apolloConfigBean.isSupported();
+        Config config = ConfigService.getAppConfig();
+        String key = "testIntValue";
+        String defaultValue = "100";
+        System.out.println(config.getProperty(key,defaultValue));
         return BaseResult.ok(supported);
     }
 }

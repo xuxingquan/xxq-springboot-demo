@@ -10,6 +10,7 @@
         <module>springboot2-cache-redis</module>
         <module>springboot2-seckill</module>
         <!--<module>springboot2-cache-redis-caffeine</module>-->
+        <module>springboot2-mybatis</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -2,15 +2,18 @@ package com.xxq.controller;
 
 import com.xxq.common.BaseResult;
 import com.xxq.configure.ConfigDomain;
+import com.xxq.domain.vo.GoodsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 @Slf4j
 @Controller
@@ -28,6 +31,19 @@ public class DemoController {
             });
         }
         return BaseResult.ok(true);
+    }
+
+    @RequestMapping("/listCustomers")
+    @ResponseBody
+    @Cacheable( value = "listCustomers" , key = "#id",condition = "#p0 !=5",unless = "#result.id == 3")
+    public GoodsVo listCustomers(@RequestParam int id){
+        int i = id;
+        log.info("i==>"+i);
+        GoodsVo customer = new GoodsVo();
+        customer.setId(Long.valueOf(i));
+        customer.setPrice(new BigDecimal(i));
+        customer.setName("customer"+i);
+        return customer;
     }
 
 }

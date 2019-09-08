@@ -12,7 +12,6 @@ import java.util.Map;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties
 public class ConfigDomain {
     @Value("#{${blogTopLinks}}")
     private Map<String, String> topLinks;
